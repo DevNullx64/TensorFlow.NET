@@ -58,6 +58,7 @@ namespace Tensorflow.Keras
             if (shuffle)
                 dataset = dataset.shuffle(batch_size * 8, seed: seed);
             dataset = dataset.batch(batch_size);
+            dataset.class_names = class_name_list;
             return dataset;
         }
 
@@ -129,7 +130,7 @@ namespace Tensorflow.Keras
             var indices = z.map(m =>
             {
                 var (i, positions) = m;
-                return tf.range(positions[i], positions[i] + sequence_length_tensor * sampling_rate_tensor, sampling_rate_tensor);
+                return tf.range(positions.Single[i], positions.Single[i] + sequence_length_tensor * sampling_rate_tensor, sampling_rate_tensor);
             }, num_parallel_calls: -1);
             var dataset = sequences_from_indices(data, indices, start_index, end_index);
 
